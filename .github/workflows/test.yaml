@@ -1,0 +1,17 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate changelog
+        id: print
+        uses: ahiho/print-out-changelog@main
+      - name: Print changelog
+        run: echo "${{ steps.print.outputs.changelog }}"
