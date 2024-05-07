@@ -18,4 +18,4 @@ runs:
     - name: "Print out changelog"
       id: print
       shell: bash
-      run: echo "changelog=$(changelog.sh ${{ inputs.from }} ${{ inputs.to }})"
+      run: echo "changelog=$(./changelog.sh ${{ inputs.from }} ${{ inputs.to }})"
