@@ -1,0 +1,21 @@
+name: "Print out changelog"
+description: "Print out changelog for the two git references"
+inputs:
+  from:
+    description: "The git reference to start from"
+    required: false
+  to:
+    description: "The git reference to end at"
+    required: false
+outputs:
+  changelog:
+    value: ${{ steps.print.outputs.changelog }}
+    description: "The changelog"
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Print out changelog"
+      id: print
+      shell: bash
+      run: echo "changelog=$(changelog.sh ${{ inputs.from }} ${{ inputs.to }})"
