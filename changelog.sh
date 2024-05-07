@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 ##############################
 # CHANGELOG SCRIPT CONSTANTS #
@@ -6,7 +6,6 @@
 
 #* Holds the list of valid types recognized in a commit subject
 #* and the display string of such type
-local -A TYPES
 TYPES=(
   build     "Build system"
   chore     "Chore"
@@ -22,11 +21,9 @@ TYPES=(
 
 #* Types that will be displayed in their own section,
 #* in the order specified here.
-local -a MAIN_TYPES
 MAIN_TYPES=(feat fix perf docs)
 
 #* Types that will be displayed under the category of other changes
-local -a OTHER_TYPES
 OTHER_TYPES=(refactor style other)
 
 #* Commit types that don't appear in $MAIN_TYPES nor $OTHER_TYPES
@@ -169,9 +166,7 @@ function display-release {
   local hash rhash
   for hash rhash in ${(kv)reverts}; do
     if (( ${+commits[$rhash]} )); then
-      # Remove revert commit
       unset "commits[$hash]" "subjects[$hash]" "scopes[$hash]" "breaking[$hash]"
-      # Remove reverted commit
       unset "commits[$rhash]" "subjects[$rhash]" "scopes[$rhash]" "breaking[$rhash]"
     fi
   done
@@ -236,7 +231,6 @@ function display-release {
     padding=$(( max_scope < ${#scope} ? 0 : max_scope - ${#scope} ))
     padding="${(r:$padding:: :):-}"
 
-    # If no scope, print padding and 3 spaces (equivalent to "[] ")
     if [[ -z "$scope" ]]; then
       printf "${padding}   "
       return
