@@ -15,7 +15,16 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: "Print out changelog"
+    - name: 🖥️ Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - name: 🔬 Check semantic versioning
       id: print
       shell: bash
-      run: echo "changelog=$(./changelog.sh ${{ inputs.from }} ${{ inputs.to }})"
+      run: |
+        GITHUB_REF=${{ github.head_ref }}
+        npx semantic-release --no-ci --dry-run --plugins @semantic-release/commit-analyzer,@semantic-release/release-notes-generator --branches ${{ github.head_ref }} | sed -n '/^##/,$p' > output.txt
+        OUTPUT=$(cat output.txt)
+        echo "::set-output name=changelog::${{ toJSON($OUTPUT) }}"
