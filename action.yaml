@@ -24,7 +24,7 @@ runs:
       id: print
       shell: bash
       run: |
-        GITHUB_REF=${{ github.head_ref }}
-        npx semantic-release --no-ci --dry-run --plugins @semantic-release/commit-analyzer,@semantic-release/release-notes-generator --branches ${{ github.head_ref }} | sed -n '/^##/,$p' > output.txt
+        GITHUB_REF=${{ github.head_ref || github.ref_name }} 
+        npx semantic-release --no-ci --dry-run --plugins @semantic-release/commit-analyzer,@semantic-release/release-notes-generator --branches $GITHUB_REF | sed -n '/^##/,$p' > output.txt
         OUTPUT=$(cat output.txt)
         echo "::set-output name=changelog::$OUTPUT"
